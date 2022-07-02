@@ -1,0 +1,1274 @@
+<WindowManager>:
+    LoginScreen:
+    SignInScreen:
+    ChangePasswordScreen:
+    MenuScreen:
+    AccountInfo:
+    TripFormScreen:
+    MpmKondo:
+        id:calc_screen
+    KondoMpm:
+        id:cal_screen
+    InvScreen:
+    TripInfo:
+        name:"TripInformation"
+    UserProfile:
+        name:"Profile"
+
+<TripFormWidget@TextInput>:
+    multiline : False
+    write_tab : False
+    space : True
+<Submit@Button>:
+    text: "Submit"
+    spacing : 100
+    background_color:0, 135/255,0, 1
+<Back@Button>:
+    text: "Back"
+    spacing : 100
+    background_color:0, 0, 0, 1
+
+<LoginScreen>:
+    on_leave: self.manager.previous_screen = self.name
+    on_pre_enter:
+        login_uname.text = ''
+        login_pword.text = ''
+    name: "LoginPage"
+    login_pword:login_pword
+    login_uname:login_uname
+    BoxLayout:
+        orientation: "vertical"
+        size_hint:.8,.5
+        pos_hint: {"center_x": .5, "center_y": .6}
+
+        Label:
+            text: "LOGIN"
+            font_size : "25dp"
+            color: 0,95,41,82
+            size_hint:1,.005
+            pos_hint: {"center_x": .5}
+
+        TextInput:
+            id: login_uname
+            hint_text: "Phone number or Username"
+            size_hint:1,.003
+            text_size: self.size
+            halign: 'left'
+            valign: 'middle'
+            icon_left: "key-variant"
+            multiline : False
+            write_tab : False
+            space : True
+            focus : True
+            on_text_validate:login_pword.focus = True
+
+        TextInput:
+            hint_text: "Password"
+            id: login_pword
+            password: True
+            size_hint:1,.003
+            mode : 'fill'
+            icon_left: "key-variant"
+            multiline : False
+            write_tab : False
+            space : False
+
+        Label:
+            id: gap1
+            size_hint:.002,.002
+        Button:
+            spacing: 10
+            text : "Submit"
+            size_hint:1,.004
+            on_press:
+                root.credential_check()
+
+
+        Button:
+            text : "Forgot password?"
+            size_hint:1,.004
+            on_press:
+                root.manager.current = "change_password"
+                root.manager.transition.direction = "down"
+        Button:
+            text : "Create new account"
+            size_hint:1,.004
+            on_press:
+                root.manager.current = "SignInPage"
+                root.manager.transition.direction = "down"
+
+<LoginErrorPopup>
+    id:LoginError
+    size_hint:.5,.3
+    auto_dismiss:False
+    color: 1,0,0,1
+    title:"LOGIN ERROR"
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            id:log_error_label
+            color: 1,0,0,1
+            text: "Wrong details.\n Try again"
+            valign:"middle"
+            pos_hint:{"center_x":.5,"center_y":.5}
+        Button:
+            size_hint:1,.5
+            text: 'Close'
+            on_press:root.dismiss()
+
+<SignInScreen>:
+    name: "SignInPage"
+    uname_field:uname_field
+    pw_field:pw_field
+    BoxLayout:
+        orientation: "vertical"
+        size_hint:.8,.5
+        pos_hint: {"center_x": .5, "center_y": .6}
+
+        Label:
+            text: "Sign In"
+            font_size : "25dp"
+            color: 0,95,41,82
+            size_hint:1,.005
+            pos_hint: {"center_x": .5}
+
+        TextInput:
+            id: uname_field
+            hint_text: "Phone number or Username"
+            size_hint:1,.003
+            text_size: self.size
+            halign: 'left'
+            valign: 'middle'
+            icon_left: "key-variant"
+            multiline : False
+            write_tab : False
+            space : True
+
+        TextInput:
+            hint_text: "Password"
+            id: pw_field
+            password: True
+            size_hint:1,.003
+            icon_left: "key-variant"
+            multiline : False
+            write_tab : False
+            space : False
+        Label:
+            id: gap
+            size_hint:.002,.002
+        Button:
+            spacing: 10
+            text : "Submit"
+            size_hint:1,.004
+            on_press:
+                root.add_credentials()
+            #on_release:
+                uname_field.text = ''
+                pw_field.text = ''
+        Button:
+            spacing: 10
+            text : "Already have an account?"
+            size_hint:1,.004
+            on_press:
+                root.manager.current = "LoginPage"
+                root.manager.transition.direction = "up"
+<UserAddedPopup>
+    id:useradded
+    size_hint:.5,.3
+    auto_dismiss:False
+    title:"New User Added"
+    Button:
+        text: 'Close'
+        size_hint:1,0.5
+        on_press:root.dismiss()
+
+<ExitingUserPopup>
+    id:LoginError
+    size_hint:.8,0.3
+    auto_dismiss:False
+    color: 1,0,0,1
+    title:"ERROR"
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text:"User exists.Try again."
+            color: 1,0,0,1
+        Button:
+            text: 'Close'
+            size_hint:0.4,0.4
+            pos_hint:{'x':.3,'y':.2}
+            on_press:root.dismiss()
+
+<ChangePasswordScreen>:
+
+    name: "change_password"
+    on_pre_enter:
+        uname_change.text = ''
+        pw_change.text = ''
+    uname_change:uname_change
+    pw_change:pw_change
+    BoxLayout:
+        orientation: "vertical"
+        size_hint:.8,.5
+        pos_hint: {"center_x": .5, "center_y": .6}
+
+        Label:
+            text: "Change Password"
+            font_size : "25dp"
+            color: 0,95,41,82
+            size_hint:1,.005
+            pos_hint: {"center_x": .5}
+
+        TextInput:
+            id: uname_change
+            hint_text: "Enter existing username"
+            size_hint:1,.003
+            text_size: self.size
+            halign: 'left'
+            valign: 'middle'
+            icon_left: "key-variant"
+            multiline : False
+            write_tab : False
+            space : True
+
+        TextInput:
+            hint_text: "Enter New Password"
+            id: pw_change
+            password: True
+            size_hint:1,.003
+            icon_left: "key-variant"
+            multiline : False
+            write_tab : False
+            space : False
+        Button:
+            spacing: 10
+            text : "Submit"
+            size_hint:1,.004
+            on_press:
+                root.change_password()
+        Button:
+            spacing: 10
+            text : "Back"
+            size_hint:1,.004
+            on_press:
+                root.back_previous_screen()
+                root.manager.transition.direction = "left"
+                #on_leave: self.manager.previous_screen = self.name
+
+
+<MenuScreen>:
+    name : "HomePage"
+    BoxLayout:
+        orientation: "vertical"
+        spacing:150
+        padding:100
+        Button:
+            text: 'Start A Trip'
+            size_hint:1,.04
+            on_press:
+                root.manager.current = "Trip"
+                root.manager.transition.direction = "left"
+        Button:
+            text: 'Account Setting'
+            size_hint:1,.04
+            on_press:
+                root.manager.current = "Account"
+                root.manager.transition.direction = "up"
+
+<AccountInfo>:
+    on_leave:self.manager.previous_screen = self.name
+    name:"Account"
+    BoxLayout:
+        orientation: "vertical"
+        spacing:20
+        padding:20
+        Button:
+            text:'Back'
+            size_hint:1,.004
+            on_press:
+                root.manager.current = "HomePage"
+                root.manager.transition.direction = "right"
+        Button:
+            text:"All Trip Information"
+            size_hint:1,.004
+            on_press:
+                root.manager.current = "TripInformation"
+                root.manager.transition.direction = "right"
+        Button:
+            text: "Change password"
+            size_hint:1,.004
+            on_press:
+                root.manager.current = "change_password"
+                root.manager.transition.direction = "up"
+        Button:
+            text:"Update Profile"
+            size_hint:1,.004
+            on_press:
+                root.manager.current = "Profile"
+                root.manager.transition.direction = "up"
+
+        Button:
+            text: 'LogOut'
+            size_hint:1,.004
+            on_press:
+                root.manager.current = "LoginPage"
+                root.manager.transition.direction = "right"
+
+
+<TripInfo>:
+    from_date:from_date
+    database:database
+    ScrollView:
+        BoxLayout:
+            padding : 1
+            spacing : 1
+            size_hint:None, None
+            width:"600dp"
+            height:"900dp"
+            orientation: "vertical"
+            BoxLayout:
+                orientation: "horizontal"
+                spacing:2
+                padding:2
+                size_hint:.9,.5
+                pos_hint: {"center_x": .5, "center_y": .1}
+                Back:
+                    text: '<Back'
+                    size_hint:.8,.2
+                    pos_hint:{'x':3,'y':.6}
+                    on_press:
+                        root.manager.current = "HomePage"
+                        root.manager.transition.direction = "right"
+                    on_release:
+                        root.database.text = ''
+                        root.remove()
+                Label:
+                    text: "From Date"
+                    size_hint:.8, .2
+                    pos_hint:{'x':0.1,'y':.6}
+                TextInput:
+                    id:from_date
+                    hint_text:"YYYY-MM-DD"
+                    padding:15
+                    size_hint:1, .2
+                    halign:'center'
+                    pos_hint:{'x':0.5,'y':.6}
+
+                Submit:
+                    id:submit_btn
+                    on_press:root.on_trip_data()
+                    size_hint:.8, .2
+                    halign:"center"
+                    valign:"middle"
+                    pos_hint:{'x':1.5,'y':.6}
+                Button:
+                    text:"Reset"
+                    on_press:root.remove()
+                    size_hint:.8, .2
+                    pos_hint:{'x':3,'y':.6}
+                    background_color:1, 0, 0, 1
+
+            StackLayout:
+                spacing:"20dp","20dp"
+                id:database
+
+
+<TripFormScreen>:
+    name:"Trip"
+    id:trip_screen
+    on_enter: root.trip_auto_number()
+    bus_number:bus_number
+    driver:driver
+    conductor:conductor
+    cleaner:cleaner
+    checker:checker
+    date:date
+    trip_number_value :trip_number_value
+    GridLayout:
+        rows:10
+        cols:2
+        padding : 10
+        spacing : 10
+        Button:
+            text : "Generate Trip Number :"
+            on_press:root.trip_auto_number()
+        Label:
+            id: trip_number_value
+            text:root.trip1
+            on_text:
+                root.manager.get_screen('Invoice').trip_number_copy.text = str(self.text)
+        Label:
+            text : "*Bus Number :"
+        TripFormWidget:
+            id : bus_number
+        Label:
+            text : "*Date :"
+        TripFormWidget :
+            id : date
+        Label:
+            text : "*Driver Name :"
+        TripFormWidget :
+            id : driver
+        Label:
+            text : "*Conductor :"
+        TripFormWidget :
+            id : conductor
+        Label:
+            text : "Checker :"
+        TripFormWidget :
+            id : checker
+        Label:
+            text : "Cleaner :"
+        TripFormWidget :
+            id : cleaner
+        Button:
+            text : "Back"
+            on_press:
+                root.manager.current = "HomePage"
+                root.manager.transition.direction = "right"
+        Spinner:
+            id:select_trip
+            text: "Select Route"
+            option_cls: "MyOption"
+            values:["MALAPPURAM - KONDOTTY","KONDOTTY - MALAPPURAM"]
+            font_size: '13dp'
+            background_color: 1,224/255,0,1
+            on_text:root.route_selector(select_trip.text)
+
+<EmptyTextPopup>
+    id:EmptyText
+    size_hint:1,1
+    auto_dismiss:False
+    color: 1,0,0,1
+    title:"ERROR"
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text:"User error.Try again."
+        Button:
+            text: 'Close'
+            size_hint:0.4,0.4
+            pos_hint:{'x':.3,'y':.2}
+            on_press:root.dismiss()
+<CounterForIn>:
+    id: mpm_kondotty
+    km:km
+    no_of_person:no_of_person
+    stop_km:0
+    stop_name:''
+    stop_person:0
+    halign: "center"
+    valign: "middle"
+    color :(1/255,123/255,0/255,1)
+    canvas.before:
+        Color:
+            rgba: (1,1,204/255,1)
+        Line:
+            width: .5
+            rectangle: self.x, self.y, self.width, self.height
+    BoxLayout:
+        orientation:"vertical"
+
+        Label:
+            font_size: "11dp"
+            size_hint:1,.5
+            id: name
+            text: str(root.stop_name)
+            color :(0,157/255,0,1)
+        BoxLayout:
+            GridLayout:
+                rows:2
+                Label:
+                    font_size: "13dp"
+                    text:"Km"
+                Label:
+                    id: km
+                    font_size: "13dp"
+                    text: str(root.stop_km)
+                    color :(26/255,209/255,1,1)
+                Label:
+                    font_size: "13dp"
+                    text:"Person"
+                TextInput:
+                    id:no_of_person
+                    hint_text:''
+                    font_size: "13dp"
+                    input_filter:'int'
+                    halign: 'center'
+                    padding:10
+
+<BusStopWidget@Button>:
+    font_size : "13dp"
+    color:(1,1,1,1)
+    halign:"center"
+
+<MyOption@SpinnerOption>:
+    font_size: '13dp'
+
+<MpmKondo>:
+    name :"CalPage"
+    on_leave: self.manager.previous_screen = self.name
+    ScrollView:
+        GridLayout:
+            id:cal_grid
+            cols:10
+            padding : 1
+            spacing : 1
+            size_hint:None, None
+            width:"1100dp"
+            height:"800dp"
+            BoxLayout:
+                orientation: "vertical"
+                BusStopWidget:
+                    text : "MPM"
+                BusStopWidget:
+            BoxLayout:
+                orientation: "vertical"
+                BusStopWidget:
+                    text : "MBH"
+                BusStopWidget:
+                    text : "2.1"
+            BoxLayout:
+                orientation: "vertical"
+                BusStopWidget:
+                    text : "ALATHURPADI"
+                BusStopWidget:
+                    text :"2.5"
+            BoxLayout:
+                orientation: "vertical"
+                BusStopWidget:
+                    text : "PILAKKAL"
+                BusStopWidget:
+                    text :"2.4"
+            BoxLayout:
+                orientation: "vertical"
+                BusStopWidget:
+                    text : "ARAVANKARA"
+                BusStopWidget:
+                    text :"2.1"
+            BoxLayout:
+                orientation: "vertical"
+                BusStopWidget:
+                    text : "VALLUVAMBRAM"
+                BusStopWidget:
+                    text :"2.9"
+            BoxLayout:
+                orientation: "vertical"
+                BusStopWidget:
+                    text : "MORAYUR"
+                BusStopWidget:
+                    text :"2.9"
+            BoxLayout:
+                orientation: "vertical"
+                BusStopWidget:
+                    text : "MUSLIR"
+                BusStopWidget:
+                    text :"2.6"
+            BoxLayout:
+                orientation: "vertical"
+                BusStopWidget:
+                    text : "COLONTRD"
+                BusStopWidget:
+                    text :"2.5"
+            BoxLayout:
+                orientation: "vertical"
+                BusStopWidget:
+                    text : "KONDOTTY"
+                BusStopWidget:
+                    text :"2.5"
+            CounterForIn:
+                id:stop1
+                stop_km: 2.1
+                stop_name:'MBH'
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            CounterForIn:
+                id :stop2
+                stop_km: 4.6
+                stop_name: "ALATHURPADI"
+            CounterForIn:
+                id :stop3
+                stop_km: 2.5
+                stop_name: "ALATHURPADI"
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            CounterForIn:
+                id :stop4
+                stop_km: 7
+                stop_name: "PILAKKAL"
+            CounterForIn:
+                id :stop5
+                stop_km: 4.9
+                stop_name: "PILAKKAL"
+            CounterForIn:
+                id :stop6
+                stop_km: 2.4
+                stop_name: "PILAKKAL"
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            CounterForIn:
+                id :stop7
+                stop_km: 9.1
+                stop_name: "ARAVANKARA"
+            CounterForIn:
+                id :stop8
+                stop_km: 7
+                stop_name: "ARAVANKARA"
+            CounterForIn:
+                id :stop9
+                stop_km: 4.5
+                stop_name: "ARAVANKARA"
+            CounterForIn:
+                id :stop10
+                stop_km: 2.1
+                stop_name: "ARAVANKARA"
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            CounterForIn:
+                id :stop11
+                stop_km: 12
+                stop_name: "VALLUMVAMBRAM"
+            CounterForIn:
+                id :stop12
+                stop_km: 9.9
+                stop_name: "VALLUMVAMBRAM"
+            CounterForIn:
+                id :stop13
+                stop_km: 7.4
+                stop_name: "VALLUMVAMBRAM"
+            CounterForIn:
+                id :stop14
+                stop_km: 5
+                stop_name: "VALLUMVAMBRAM"
+            CounterForIn:
+                id :stop15
+                stop_km: 2.9
+                stop_name: "VALLUMVAMBRAM"
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            CounterForIn:
+                id :stop16
+                stop_km: 14.9
+                stop_name: "MORAYUR"
+            CounterForIn:
+                id :stop17
+                stop_km: 12.8
+                stop_name: "MORAYUR"
+            CounterForIn:
+                id :stop18
+                stop_km: 10.3
+                stop_name: "MORAYUR"
+            CounterForIn:
+                id :stop19
+                stop_km: 7.9
+                stop_name: "MORAYUR"
+            CounterForIn:
+                id :stop20
+                stop_km: 5.8
+                stop_name: "MORAYUR"
+            CounterForIn:
+                id :stop21
+                stop_km: 2.9
+                stop_name: "MORAYUR"
+            Label:
+            Label:
+            Label:
+            Label:
+            CounterForIn:
+                id :stop22
+                stop_km: 17.5
+                stop_name: "MUSLIR"
+            CounterForIn:
+                id :stop23
+                stop_km: 15.4
+                stop_name: "MUSLIR"
+            CounterForIn:
+                id :stop24
+                stop_km: 12.9
+                stop_name: "MUSLIR"
+            CounterForIn:
+                id :stop25
+                stop_km: 10.5
+                stop_name: "MUSLIR"
+            CounterForIn:
+                id :stop26
+                stop_km: 8.4
+                stop_name: "MUSLIR"
+            CounterForIn:
+                id :stop27
+                stop_km: 5.5
+                stop_name: "MUSLIR"
+            CounterForIn:
+                id :stop28
+                stop_km: 2.6
+                stop_name: "MUSLIR"
+            Label:
+            Label:
+            Label:
+            CounterForIn:
+                id :stop29
+                stop_km: 20
+                stop_name: "COLONY"
+            CounterForIn:
+                id :stop30
+                stop_km: 17.9
+                stop_name: "COLONY"
+            CounterForIn:
+                id :stop31
+                stop_km: 15.4
+                stop_name: "COLONY"
+            CounterForIn:
+                id :stop32
+                stop_km: 13
+                stop_name: "COLONY"
+            CounterForIn:
+                id :stop33
+                stop_km: 10.9
+                stop_name: "COLONY"
+            CounterForIn:
+                id :stop34
+                stop_km: 8
+                stop_name: "COLONY"
+            CounterForIn:
+                id :stop35
+                stop_km: 5.1
+                stop_name: "COLONY"
+            CounterForIn:
+                id :stop36
+                stop_km: 2.5
+                stop_name: "COLONY"
+            Label:
+            Label:
+            CounterForIn:
+                id :stop37
+                stop_km: 20.4
+                stop_name: "KONDOTTY"
+            CounterForIn:
+                id :stop38
+                stop_km: 22.2
+                stop_name: "KONDOTTY"
+            CounterForIn:
+                id :stop39
+                stop_km: 17.9
+                stop_name: "KONDOTTY"
+            CounterForIn:
+                id :stop40
+                stop_km: 15.5
+                stop_name: "KONDOTTY"
+            CounterForIn:
+                id :stop41
+                stop_km: 13.4
+                stop_name: "KONDOTTY"
+            CounterForIn:
+                id :stop42
+                stop_km: 10.5
+                stop_name: "KONDOTTY"
+            CounterForIn:
+                id :stop43
+                stop_km: 7.6
+                stop_name: "KONDOTTY"
+            CounterForIn:
+                id :stop44
+                stop_km: 5
+                stop_name: "KONDOTTY"
+            CounterForIn:
+                id :stop45
+                stop_km: 2.5
+                stop_name: "KONDOTTY"
+            Label:
+            Back:
+                on_press:
+                    root.manager.current = "Trip"
+                    root.manager.transition.direction = "right"
+            BoxLayout:
+                orientation:'vertical'
+                Label:
+                    text: "For Passenger "
+                    halign: 'center'
+                    font_size:'13dp'
+                    color:(1,224/255,0,1)
+                Label:
+                    text: "count, select the "
+                    halign: 'left'
+                    font_size:'13dp'
+                    color:(1,224/255,0,1)
+                Label:
+                    text: "last Stop --> "
+                    halign: 'left'
+                    font_size:'13dp'
+                    color:(1,224/255,0,1)
+            Spinner:
+                id:spinner_data
+                text: "Last Stop"
+                option_cls: "MyOption"
+                values:["MPM","MBH", "ALATHURPADI", "PILAKKAL", "ARAVANKARA","VALLUMVAMBRAM", "MORAYUR","MUSLIR","COLONY","KONDOTTY"]
+                font_size: '13dp'
+                background_color: 1,224/255,0,1
+                on_text:root.instant_passengers_count(spinner_data.text)
+            Label:
+                id:passenger_count
+                color:(1,0,0,1)
+                text:str(root.passenger_count)
+            Submit:
+                id: trip_final
+                on_press:
+                    root.manager.current = "Invoice"
+                    root.manager.transition.direction = "left"
+                    root.trip_calculation()
+<KondoMpm>:
+    on_leave: self.manager.previous_screen = self.name
+    name :"CalPageKondoMpm"
+    ScrollView:
+        GridLayout:
+            id:cal_grid
+            cols:10
+            padding : 1
+            spacing : 1
+            size_hint:None, None
+            width:"1100dp"
+            height:"800dp"
+            BoxLayout:
+                orientation: "vertical"
+                BusStopWidget:
+                    text : "KONDOTTY"
+                BusStopWidget:
+            BoxLayout:
+                orientation: "vertical"
+                BusStopWidget:
+                    text : "COLONYRD"
+                BusStopWidget:
+                    text : "2.5"
+            BoxLayout:
+                orientation: "vertical"
+                BusStopWidget:
+                    text : "MUSLIR"
+                BusStopWidget:
+                    text :"2.5"
+            BoxLayout:
+                orientation: "vertical"
+                BusStopWidget:
+                    text : "MORAYUR"
+                BusStopWidget:
+                    text :"2.6"
+            BoxLayout:
+                orientation: "vertical"
+                BusStopWidget:
+                    text : "VALLUVAMBRAM"
+                BusStopWidget:
+                    text :"2.9"
+            BoxLayout:
+                orientation: "vertical"
+                BusStopWidget:
+                    text : "ARAVANKARA"
+                BusStopWidget:
+                    text :"2.9"
+            BoxLayout:
+                orientation: "vertical"
+                BusStopWidget:
+                    text : "PILAKKAL"
+                BusStopWidget:
+                    text :"2.1"
+            BoxLayout:
+                orientation: "vertical"
+                BusStopWidget:
+                    text : "ALATHURPADI"
+                BusStopWidget:
+                    text :"2.4"
+            BoxLayout:
+                orientation: "vertical"
+                BusStopWidget:
+                    text : "MBH"
+                BusStopWidget:
+                    text :"2.5"
+            BoxLayout:
+                orientation: "vertical"
+                BusStopWidget:
+                    text : "MPM"
+                BusStopWidget:
+                    text :"2.1"
+            CounterForIn:
+                id:stop101
+                stop_km: 2.5
+                stop_name:'COLONY RD'
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            CounterForIn:
+                id :stop102
+                stop_km: 5
+                stop_name: "MUSLIR"
+            CounterForIn:
+                id :stop103
+                stop_km: 2.5
+                stop_name: "MUSLIR"
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            CounterForIn:
+                id :stop104
+                stop_km: 7.6
+                stop_name: "MORAYUR"
+            CounterForIn:
+                id :stop105
+                stop_km: 5.1
+                stop_name: "MORAYUR"
+            CounterForIn:
+                id :stop106
+                stop_km: 2.6
+                stop_name: "MORAYUR"
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            CounterForIn:
+                id :stop107
+                stop_km: 10.5
+                stop_name: "VALLUMVAMBRAM"
+            CounterForIn:
+                id :stop108
+                stop_km: 8
+                stop_name: "VALLUMVAMBRAM"
+            CounterForIn:
+                id :stop109
+                stop_km: 5.5
+                stop_name: "VALLUMVAMBRAM"
+            CounterForIn:
+                id :stop110
+                stop_km: 2.9
+                stop_name: "VALLUMVAMBRAM"
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            CounterForIn:
+                id :stop111
+                stop_km: 13.4
+                stop_name: "ARAVANKARA"
+            CounterForIn:
+                id :stop112
+                stop_km: 10.9
+                stop_name: "ARAVANKARA"
+            CounterForIn:
+                id :stop113
+                stop_km: 8.4
+                stop_name: "ARAVANKARA"
+            CounterForIn:
+                id :stop114
+                stop_km: 5.8
+                stop_name: "ARAVANKARA"
+            CounterForIn:
+                id :stop115
+                stop_km: 2.9
+                stop_name: "ARAVANKARA"
+            Label:
+            Label:
+            Label:
+            Label:
+            Label:
+            CounterForIn:
+                id :stop116
+                stop_km: 15.5
+                stop_name: "PILAKKAL"
+            CounterForIn:
+                id :stop117
+                stop_km: 13
+                stop_name: "PILAKKAL"
+            CounterForIn:
+                id :stop118
+                stop_km: 10.5
+                stop_name: "PILAKKAL"
+            CounterForIn:
+                id :stop119
+                stop_km: 7.9
+                stop_name: "PILAKKAL"
+            CounterForIn:
+                id :stop120
+                stop_km: 5
+                stop_name: "PILAKKAL"
+            CounterForIn:
+                id :stop121
+                stop_km: 2.1
+                stop_name: "PILAKKAL"
+            Label:
+            Label:
+            Label:
+            Label:
+            CounterForIn:
+                id :stop122
+                stop_km: 17.9
+                stop_name: "ALATHURPADI"
+            CounterForIn:
+                id :stop123
+                stop_km: 15.4
+                stop_name: "ALATHURPADI"
+            CounterForIn:
+                id :stop124
+                stop_km: 12.9
+                stop_name: "ALATHURPADI"
+            CounterForIn:
+                id :stop125
+                stop_km: 10.3
+                stop_name: "ALATHURPADI"
+            CounterForIn:
+                id :stop126
+                stop_km: 7.4
+                stop_name: "ALATHURPADI"
+            CounterForIn:
+                id :stop127
+                stop_km: 5.5
+                stop_name: "ALATHURPADI"
+            CounterForIn:
+                id :stop128
+                stop_km: 2.4
+                stop_name: "ALATHURPADI"
+            Label:
+            Label:
+            Label:
+            CounterForIn:
+                id :stop129
+                stop_km: 20.4
+                stop_name: "MBH"
+            CounterForIn:
+                id :stop130
+                stop_km: 17.9
+                stop_name: "MBH"
+            CounterForIn:
+                id :stop131
+                stop_km: 15.4
+                stop_name: "MBH"
+            CounterForIn:
+                id :stop132
+                stop_km: 12.8
+                stop_name: "MBH"
+            CounterForIn:
+                id :stop133
+                stop_km: 9.9
+                stop_name: "MBH"
+            CounterForIn:
+                id :stop134
+                stop_km: 8
+                stop_name: "MBH"
+            CounterForIn:
+                id :stop135
+                stop_km: 4.9
+                stop_name: "MBH"
+            CounterForIn:
+                id :stop136
+                stop_km: 2.5
+                stop_name: "MBH"
+            Label:
+            Label:
+            CounterForIn:
+                id :stop137
+                stop_km: 22.1
+                stop_name: "MPM"
+            CounterForIn:
+                id :stop138
+                stop_km: 20
+                stop_name: "MPM"
+            CounterForIn:
+                id :stop139
+                stop_km: 17.5
+                stop_name: "MPM"
+            CounterForIn:
+                id :stop140
+                stop_km: 14.9
+                stop_name: "MPM"
+            CounterForIn:
+                id :stop141
+                stop_km: 12
+                stop_name: "MPM"
+            CounterForIn:
+                id :stop142
+                stop_km: 10.1
+                stop_name: "MPM"
+            CounterForIn:
+                id :stop143
+                stop_km: 7
+                stop_name: "MPM"
+            CounterForIn:
+                id :stop144
+                stop_km: 4.6
+                stop_name: "MPM"
+            CounterForIn:
+                id :stop145
+                stop_km: 2.1
+                stop_name: "MPM"
+            Label:
+                text:"END"
+            Back:
+                on_press:
+                    root.manager.current = "Trip"
+                    root.manager.transition.direction = "right"
+            BoxLayout:
+                orientation:'vertical'
+                Label:
+                    text: "For Passenger "
+                    halign: 'center'
+                    font_size:'13dp'
+                    color:(1,224/255,0,1)
+                Label:
+                    text: "count, select the "
+                    halign: 'left'
+                    font_size:'13dp'
+                    color:(1,224/255,0,1)
+                Label:
+                    text: "last Stop --> "
+                    halign: 'left'
+                    font_size:'13dp'
+                    color:(1,224/255,0,1)
+            Spinner:
+                id:spinner_data
+                text: "Last Stop"
+                option_cls: "MyOption"
+                values:["KONDOTTY","COLONY RD","MUSLIR","MORAYUR","VALLUMVAMBRAM","ARAVANKARA","PILAKKAL","ALATHURPADI","MBH","MPM"]
+                font_size: '13dp'
+                background_color: 1,224/255,0,1
+                on_text:root.instant_passengers_count(spinner_data.text)
+            Label:
+                id:passenger_count
+                color:(1,0,0,1)
+                text:str(root.passenger_count)
+            Submit:
+                id: trip_final
+                on_press:
+                    root.manager.current = "Invoice"
+                    root.manager.transition.direction = "left"
+                    root.trip_calculation()
+<InvScreen>:
+    id:inv_screen
+    name :"Invoice"
+    trip_number_copy:trip_number_copy
+    on_enter: root.total_amount()
+    GridLayout:
+        cols:2
+        rows:5
+        padding : 10
+        spacing : 10
+        size_hint:1,1
+        Label:
+            text : "Trip Number :"
+        Label :
+            id: trip_number_copy
+        Label:
+            text : "Amount :"
+        Label :
+            text:str(root.total_amount_copy)
+        Back:
+            size_hint:0.4,0.4
+            pos_hint:{'x':.3,'y':.2}
+            on_press: root.previous_screen()
+        Button:
+            text:"Save & New Trip"
+            size_hint:0.4,0.4
+            pos_hint:{'x':.3,'y':.2}
+            on_press:
+                root.store_trip_info()
+                root.manager.current = "Trip"
+                root.manager.transition.direction = "right"
+        Button:
+            text: 'HomePage'
+            on_press:
+                root.manager.current = "HomePage"
+                root.manager.transition.direction = "right"
+        Button:
+            text: 'LogOut'
+            size_hint:0.4,0.4
+            pos_hint:{'x':.3,'y':.2}
+            on_press:
+                root.manager.current = "LoginPage"
+                root.manager.transition.direction = "down"
+
+<UserProfile>:
+    name:'Profile'
+    fixed_bus_number:fixed_bus_number
+    driver:driver
+    conductor:conductor
+    cleaner:cleaner
+    checker:checker
+    GridLayout:
+        rows:10
+        cols:2
+        padding : 10
+        spacing : 10
+        Label:
+            text : "Bus Number :"
+        TripFormWidget :
+            id : fixed_bus_number
+            on_text: root.manager.get_screen('Trip').bus_number.text = str(self.text)
+        Label:
+            text : "Driver Name :"
+        TripFormWidget :
+            id : driver
+        Label:
+            text : "Conductor :"
+        TripFormWidget :
+            id : conductor
+        Label:
+            text : "Checker :"
+        TripFormWidget :
+            id : checker
+        Label:
+            text : "Cleaner :"
+        TripFormWidget :
+            id : cleaner
+        Button:
+            text : "Back"
+            on_press:
+                root.manager.current = "Account"
+                root.manager.transition.direction = "right"
+        Button:
+            text : "Submit"
+            on_press:
+                root.manager.current = "Account"
+                root.manager.transition.direction = "right"
+
+
+
+
+
+
+
+
+
